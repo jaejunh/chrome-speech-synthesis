@@ -1,0 +1,22 @@
+{
+  "name": "chrome-speech-synthesis",
+  "version": "0.1.8",
+  "description": "chrome has nice sythesis voices. Why not leverage?",
+  "license": "MIT",
+  "homepage": "https://github.com/expressjs/express",
+  "maintainers": [
+    {
+      "name": "jaejunhwang",
+      "email": "jaejunh@embian.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrome-speech-synthesis/chrome-speech-synthesis.git"
+  },
+  "dependencies": {
+    "ejs": "~2.3.3",
+    "express": "~4.13.1",
+    "socket.io": "^1.4.5"
+  }
+}

@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+  <head>
+<meta>
+    <title>Speak Test Script for Chrome Speech Synthesis Service</title>
+   <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+   <style>
+textarea {
+  margin-top: 10px;
+  margin-left: 50px;
+  width: 600px;
+  height: 430px;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
+  border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+  border-image: none;
+  border-radius: 6px 6px 6px 6px;
+  border-style: none solid solid none;
+  border-width: medium 1px 1px medium;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+  color: #555555;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 0.9em;
+  line-height: 1.3em;
+  padding: 5px 8px;
+  transition: background-color 0.2s ease 0s;
+}
+
+
+textarea:focus {
+    background: none repeat scroll 0 0 #FFFFFF;
+    outline-width: 0;
+}
+</style>
+  </head>
+  <body>
+    <div id="page-wrapper">
+      <h1>Speaking Test <sup> Yo Rap!</sup></h1>
+        <p id="msg"></p>
+	<div>
+		Speaker ID: 
+               <input type="text" placeholder="Please enter remote speaker ID (where to send)" id="remoteID" name="remoteID">
+
+	</div>
+
+	<div>
+		Script: 
+	<textarea placeholder="Please type your dialog.." rows="33" name="comment[text]" id="comment_text" cols="80" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+*setting:  Alice=en-US, Brian=en-GB~1, Chloe=en-GB, voice_default=ko-KR
+
+sound2:
+안녕하세요? 제 이름은 Kay 입니다.
+지금 부터..  Chrome Speech 영어회화를.. 시작하겠습니다.
+
+sound1: 4300
+Alice:  Hi, guys. Are you going to watch movie tonight?
+Chloe:  Oh, that sounds like great idea! What about you, Brian?
+Brian:  I am sorry I can't.  My/ parents are visiting my house tonight.
+Brian:  So I need to clean up my room. Can we do that, next week, together?
+
+Alice:  Oh, well, why not.  Take a good care of your parents.
+Chloe:  Ok then.  See you all next week!
+Brian:  Ok Bye!
+             
+sound1: 19000
+이 장면은 여우같은 엘리스가/ 브라이언에게/ 작업했지만/ 브라이언이- 슬기롭게/ 빠져 나가는 모습입니다.
+참 잘했어요 브라이언.</textarea>
+	</div>
+	<div>
+	<button id="rap" name="rap">Yo Rap!</button>
+	</div>
+	<div>
+    	<p id="demo">..Ready...</p>
+	</div>
+    </div>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script type="text/javascript">
+var button = document.getElementById('rap');
+var speeches = []; 
+var silence = "(silence)";
+
+function callSpeechServer(myURL) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange=function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      document.getElementById("demo").innerHTML = "<font size='-1'>" + xhttp.responseText + "</font>";
+    } else {
+      document.getElementById("demo").innerHTML = "<font color='red'>" + xhttp.responseText + "</font>";
+    }
+  };
+  xhttp.open("GET",myURL, true);
+  console.log(myURL);
+  xhttp.send();
+}
+
+
+function par(n,v) {
+	return "&" + n + "=" +v;
+}
+
+function sendURL() {
+	if (speeches.length > 0) {
+		var head = speeches.shift();
+		var to = document.getElementById("remoteID").value;
+		console.log(to);
+		var myURL = "/client?";
+		myURL = myURL + "from=web" 
+			+ par("voice",head.voice)
+			+ par("to", to)
+		 	+ par("msg",head.msg)
+			+ par("volume", "1.0");
+		
+		callSpeechServer(myURL);
+		window.setTimeout(function () { sendURL(); }, 1000);	
+		console.log(myURL);
+	}
+}
+
+function buildSpeeches () {
+	var sentences = document.getElementById('comment_text').value.split("\n");
+	var j=0;
+	var speakers = { Alice: 'en-US', Brian: 'en-GB:1', Chloe: 'en-GB', voice_default: 'ko-KR' };  
+	speeches = [];
+
+
+	for (var i=0; i < sentences.length; i++) {
+		sentences[i]=sentences[i].replace(/(\&\&)/gm,"&");
+		sentences[i]=sentences[i].replace(/[ ](\&)[ ]/gm,"and");
+		sentences[i]=sentences[i].replace(/(\&)/gm," ");
+		sentences[i]=sentences[i].replace(/(\r\n|\n|\r)/gm,"").trim();
+		if (sentences[i] == "") {
+			speeches[j++] = { voice: "silence", msg: silence };
+			continue;
+		}
+		var s = sentences[i].split(":");
+		//console.log(s);
+		var head = s[0].trim();
+		s.shift();
+
+		if (head == "sound1" || head == "sound2") {
+			var timeWait = s.shift().trim();
+			speeches[j++] = { voice: head, msg: parseInt(timeWait) || 0 };	
+			continue;
+		}	
+
+		if (head.charAt(0) == '*') {
+			if (head == '*setting') {
+			// reset speakers; 
+				s[0].split(",").forEach(function (element) {
+					var e = element.split("=");
+					speakers[e[0].trim()] = e[1].trim();
+				}); 
+			};
+			continue;
+		};
+		//console.log(speakers);
+		if (head.length > 10) {
+			// head too long. no speaker name, thus use chair 
+			speeches[j++] = { voice: speakers['voice_default'], msg: head }; 
+			speeches[j++] = { voice: "silence", msg: silence };
+		} else {
+			speeches[j++] = { voice: speakers[head], msg: s.join(":") };
+			speeches[j++] = { voice: "silence", msg: silence };
+		};
+	}
+	//console.log(speakers);
+	console.log(speeches);
+	return speeches;
+}
+
+button.addEventListener('click', function (e) {
+	var r = document.getElementById("remoteID");
+	if (r == undefined || r.value == "") {
+      		document.getElementById("demo").innerHTML = "<font color='red'>Please enter speakerID. Otherwise, I don't know where to send your script.</font>";
+	} else {
+		buildSpeeches();
+		sendURL();
+	}
+});
+
+
+</script>
+<!--
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/speech-synthesis.js"></script>
+<script src="/javascripts/_languageData.js"></script>
+<script src="/javascripts/guessLanguage.js"></script>
+-->
+  </body>
+</html>
+

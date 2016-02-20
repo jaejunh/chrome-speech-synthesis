@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Chrome Speech Synthesis Service</title>
+   <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div id="page-wrapper">
+      <h1>Chrome Speech Synthesis Service</h1>
+
+        <p id="msg"></p>
+        <input type="text" name="speech-msg" id="speech-msg" x-webkit-speech value="Please talk to me">
+
+        <div class="option">
+                <label for="voice">Voice</label>
+		<span name="voiceOutput" id="voiceOutput"></span>
+                <select name="voice" id="voice" ></select>
+        </div>
+        <div class="option">
+                <label for="volume">Volume</label>
+		<output name="volumeOutput" id="volumeOutput" for="volume">1.0</output>
+                <input type="range" min="0.0" max="1.0" step="0.1" name="volume" id="volume" value="1.0" oninput="volumeOutput.value=this.value">
+        </div>
+        <div class="option">
+                <label for="rate">Rate</label>
+		<output name="rateOutput" id="rateOutput" for="rate">1.0</output>
+                <input type="range" min="0.3" max="1.8" step="0.1" name="rate" id="rate" value="1" oninput="rateOutput.value=' '+this.value">
+        </div>
+        <div class="option">
+                <label for="pitch">Pitch</label>
+		<output name="pitchOutput" id="pitchOutput" for="pitch">1.0</output>
+                <input type="range" min="0.3" max="1.8" step="0.1" name="pitch" id="pitch" value="1" oninput="pitchOutput.value=this.value">
+        </div>
+	<div class="option">
+		<label>Your Speaker ID</label> 
+		<p id="mySpeakerID"><%= speakerIDLabel %></p> 
+		<input type='hidden' name="speakerID" id="speakerID" value=<%= speakerID %> >
+	</div>
+	<div class="option">
+		<label for="remoteID">Remote Speaker ID</label> 
+                <input type="text" placeholder="optionally, you enter remote speakerID" id="remoteID" name="remoteID">
+	</div>
+        <button id="speak" name="speak">Speak</button>
+    </div>
+    <div>
+	<center><span> Need more to say? Please try, </span>
+	<a href onclick="OpenInNewTab('/rap');">"Yo, Rap!"</a>
+	</center>
+    </div>
+    <div>
+    	<ul id="messages"></ul>
+    </div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/javascripts/speech-synthesis.js"></script>
+<script src="/javascripts/_languageData.js"></script>
+<script src="/javascripts/guessLanguage.js"></script>
+  </body>
+</html>
+
