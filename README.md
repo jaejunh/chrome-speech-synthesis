@@ -8,7 +8,7 @@ socket.io+express+node.js server.
 
 Only chrome (and sadly not chromium) has many synthesis voices of incredable quality,
 and I need to overcome the shortcoming of linux based electron node.js's dumbness.  This
-poverty of Shortcoming drove me to devise quick-and-dirty alternative to "barrow" 
+poverty of shortcoming drove me to devise quick-and-dirty solution to "barrow" 
 google chrome's native speech synthesis service "legally" just by mashuping up 
 via socket.io bridge externally from chrome. 
 
