@@ -141,7 +141,7 @@ Well, yes and no.  It really depends on your project.
 
 ## Advanced Usage:  I understand basic.  How Can I Run Chrome Speech Synthesis Service(CSSS) as a Server?
 	
-	In order for CSSS to run as server, you need two services have to stay up, 
+	In order for CSSS to run as server, you need two services up, 
 	namely, 1) CSSS node service (node index.js), 2) your google chrome
 	
 	1) is easy part (as you know from previous section), and for 2)
