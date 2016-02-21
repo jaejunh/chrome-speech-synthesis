@@ -2,13 +2,16 @@
 
 ## What is chrome-speech-synthesis?
 
-chrome-speech-synthesis is a simple web app using chrome as a human voice sythesiser. 
-If you need to add voice synthesis into your application, you need that functionality
-provided by OS.  
-	
-Most of modern OS provides the synthesis service as de facto.  Yet some (i.e ubuntu)
-doesn't provide it (probably due to voice itself is provider's asset)
-	
+chrome-speech-synthesis is a simple web app using your chrome as a human voice 
+synthesiser (or try to think of online remote speaker device) throught simple
+socket.io node.js server.  
+
+Only chrome (and sadly not chromium) has many synthesis voices of incredable quality,
+and I need to overcome the shortcoming of linux based electron node.js's dumbness.  This
+poverty of Shortcoming drove me to devise quick-and-dirty alternative to "barrow" 
+google chrome's native speech synthesis service "legally" just by mashuping up 
+via socket.io bridge externally from chrome. 
+
 That's why I develop chrome-speech-synthesis which works as a remote bridge and control 
 to chrome synthesiser's API.
 
@@ -20,18 +23,20 @@ to chrome synthesiser's API.
 Well, yes and no.  It really depends on your project.  
 	
 	In our case, we need our garage project, smart mirror based on RPi 
-	with electron.js (chromium!!) need to speak some words. Yet 
+	with electron.js (branch of chromium!!) need to speak some words. Yet 
 	chromium, the open source brother of google chrome, has API but no voice
 	due to license issue.
 	
-	That forced us to use "Mac" or "Windows", the OS of luxury, and as you know that's 
-	hardly an option.   Instead, we need a better cheap alternative, so we ended up separating out 
-	voice call service to an independent HTTP web service.  By doing so, we still can 
+	That forced us to use "Mac" or "Windows", the OS of luxury voices, and 
+	as you know that's hardly an option.   Instead, we need a better 
+	cheap alternative, so we ended up separating out voice call service 
+	to an independent HTTP web service.  By doing so, we still can 
 	use RPi to speak (although via another PC), or at least we can change RPi 
 	to a little more expensive alternative,  Intel Stick PC.
 	
 	If you are looking for solution to send "synthesized voice", this may be good
-	start.  It's Free! (and MIT license if you need to modify it for your project)
+	start.  It's Free! (and my source code is MIT license if you need to 
+	modify it to suite your project)
 	
 ![alt tag](https://github.com/jaejunh/chrome-speech-synthesis/blob/master/doc/usage.jpg)
 
