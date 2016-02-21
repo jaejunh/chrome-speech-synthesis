@@ -4,7 +4,7 @@
 
 chrome-speech-synthesis is a simple web app using your chrome as a human voice 
 synthesiser (or try to think of online remote speaker device) throught simple
-socket.io node.js server.  
+socket.io+express+node.js server.  
 
 Only chrome (and sadly not chromium) has many synthesis voices of incredable quality,
 and I need to overcome the shortcoming of linux based electron node.js's dumbness.  This
